@@ -7,6 +7,8 @@ const nodeCache=new NodeCache();
 export const createPost = async (req, res) => {
   try {
     const { userId, description, picturePath } = req.body;
+    const friends=JSON.parse(req.body.tagged);
+    console.log(friends);
     const user = await User.findById(userId);
     const newPost = new Post({
       userId,
@@ -18,6 +20,7 @@ export const createPost = async (req, res) => {
       picturePath,
       likes: {},
       comments: [],
+      tagged:friends
     });
     await newPost.save();
     nodeCache.del("post");
@@ -33,12 +36,15 @@ export const createPost = async (req, res) => {
 export const getFeedPosts = async (req, res) => {
   try {
     let post;
+    //nodeCache.del("post");
+    console.log("posts");
     if(nodeCache.has("post"))
       {  console.log("from cache");
          post=JSON.parse(nodeCache.get("post")); 
       }
       else
       { post=await Post.find({});
+      
      nodeCache.set("post",JSON.stringify(post));}
      post = await Post.find();
     res.status(200).json(post);
