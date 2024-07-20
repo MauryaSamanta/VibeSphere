@@ -235,7 +235,7 @@ const MyPostWidget = ({ picturePath }) => {
     if(friends){
       formData.append("tagged",JSON.stringify(friends));
     }
-    const response = await fetch(`http://localhost:3001/posts`, {
+    const response = await fetch(`https://vibesphere-yk0w.onrender.com/posts`, {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
       body: formData,
